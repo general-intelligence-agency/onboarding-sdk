@@ -8,12 +8,12 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { Loader2 } from "lucide-react"; // Assuming Loader2 is imported from lucide-react
 
 export function OnboardingFlow({ onClose }: { onClose: () => void }) {
   const [step, setStep] = useState(1);
@@ -33,6 +33,7 @@ export function OnboardingFlow({ onClose }: { onClose: () => void }) {
     ownerEmail: "",
     ownerPhoneNumber: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,10 +43,27 @@ export function OnboardingFlow({ onClose }: { onClose: () => void }) {
   const handleNext = () => setStep((prevStep) => prevStep + 1);
   const handlePrev = () => setStep((prevStep) => prevStep - 1);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    setStep(5);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/onboarding", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      setStep(5);
+    } catch (error) {
+      console.error("Error onboarding:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStep = () => {
@@ -258,29 +276,42 @@ export function OnboardingFlow({ onClose }: { onClose: () => void }) {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {renderStep()}
+            <div className="flex justify-between mt-4">
+              {step > 1 && step < 5 && (
+                <Button type="button" variant="outline" onClick={handlePrev}>
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+                </Button>
+              )}
+              {step < 4 && (
+                <Button
+                  type="button"
+                  className={step > 1 ? "" : "ml-auto"}
+                  onClick={handleNext}
+                >
+                  Next <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              )}
+              {step === 4 && (
+                <Button
+                  type="submit"
+                  className="ml-auto"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      Submitting...{" "}
+                      <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Submit <Check className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
           </form>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          {step > 1 && step < 5 && (
-            <Button type="button" variant="outline" onClick={handlePrev}>
-              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-            </Button>
-          )}
-          {step < 4 && (
-            <Button
-              type="button"
-              className={step > 1 ? "" : "ml-auto"}
-              onClick={handleNext}
-            >
-              Next <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-          {step === 4 && (
-            <Button type="submit" className="ml-auto">
-              Submit <Check className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-        </CardFooter>
+        </CardContent>{" "}
       </Card>
     </div>
   );
