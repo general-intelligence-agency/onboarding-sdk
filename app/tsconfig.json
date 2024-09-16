@@ -19,8 +19,18 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "declaration": true,
+    "declarationDir": "dist",
+    "outDir": "dist"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "rollup.config.mjs",
+    "src"
+  ],
+  "exclude": ["node_modules", "dist"]
 }

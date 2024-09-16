@@ -1,5 +1,8 @@
-import { OnboardingFlow } from "@/components/onboarding-flow"
+"use client";
 
-export default function Page() {
-  return <OnboardingFlow />
+import React from "react";
+import { OnboardingFlow } from "@/components/onboarding-flow";
+
+export default function Page({ onClose }: { onClose?: () => void }) {
+  return <OnboardingFlow onClose={onClose} />;
 }
