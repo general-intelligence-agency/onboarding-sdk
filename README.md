@@ -2,6 +2,12 @@
 
 ## Installation
 
+```
+npm i gia-onboarding-sdk
+OR
+yarn add gia-onboarding-sdk
+```
+
 ## Usage
 
 Import and use the `OnboardingFlow` component in your React application:
