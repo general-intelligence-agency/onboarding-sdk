@@ -3,8 +3,10 @@
 ## Installation
 
 ```
+# NPM
 npm i gia-onboarding-sdk
-OR
+
+# Yarn
 yarn add gia-onboarding-sdk
 ```
 
