@@ -108,7 +108,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `https://generalintel.co/api/v1/applications`,
+        `https://api.generalintel.co/api/v1/applications`,
         {
           method: "POST",
           headers: {
