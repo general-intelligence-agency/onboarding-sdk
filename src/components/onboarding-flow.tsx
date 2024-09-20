@@ -1,18 +1,17 @@
+import { ArrowLeft, ArrowRight, Check, Loader2, Shield, X } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardFooter,
 } from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import { Progress } from "./ui/progress";
-import { ArrowLeft, ArrowRight, Check, X, Shield } from "lucide-react";
-import { Loader2 } from "lucide-react";
 
 interface OnboardingFlowProps {
   onClose?: () => void;
@@ -108,7 +107,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `https://api.generalintel.co/api/v1/applications`,
+        `https://api-8450.onrender.com/v1/applications`,
         {
           method: "POST",
           headers: {
